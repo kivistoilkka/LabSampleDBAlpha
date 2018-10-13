@@ -1,1 +1,1 @@
-web:    java -cp target/classes:target/dependency/* tikape.labsampledatabase.main
+web:    java -cp target/classes:target/dependency/* tikape.labsampledatabase.Main
