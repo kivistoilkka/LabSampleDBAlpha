@@ -1,0 +1,36 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Hosts</title>
+        <meta charset="UTF-8">
+    </head>
+
+    <body>
+        <h1>Hosts</h1>
+        Code, species, sex, age group, capture year, capture site</br>
+        <ul>
+            <li th:each="host : ${hosts}">
+                <span th:text="${host.code}">Code</span>&nbsp
+                <span th:text="${host.species}">Species</span>&nbsp
+                <span th:text="${host.sex}">Sex</span>&nbsp
+                <span th:text="${host.ageGroup}">Age group</span>&nbsp
+                <span th:text="${host.captureYear}">Capture year</span>&nbsp
+                <span th:text="${host.captureSite}">Capture site</span>
+                </br>
+            </li>
+        </ul>
+
+        <h2>Add new host</h2>
+
+        <form method="POST" action="/hosts/addhost">
+            Code: <input type="text" name="code"/><br/>
+            Species: <input type="text" name="species"/><br/>
+            Sex: <input type="text" name="sex"/><br/>
+            Age group: <input type="text" name="ageGroup"/><br/>
+            Capture year: <input type="text" name="captureYear"/><br/>
+            Capture site: <input type="text" name="captureSite"/><br/>
+
+            <input type="submit" value="Add"/>
+        </form>
+    </body>
+</html>
