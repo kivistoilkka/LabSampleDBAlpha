@@ -1,7 +1,7 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>Samples from the host</title>
+        <title>Lab Sample Database: Samples from the host</title>
         <style>
             table, th {
                 text-align: left;
@@ -12,13 +12,29 @@
 
     <body>
         <h1>Samples from the host <span th:text="${host.code}">Code of the host</span></h1>
-        <p>
-            Host species: <span th:text="${host.species}">Species</span></br>
-            Host sex: <span th:text="${host.sex}">Sex</span></br>
-            Host age group: <span th:text="${host.ageGroup}">Age group</span></br>
-            Host capture year: <span th:text="${host.captureYear}">Capture year</span></br>
-            Host capture site: <span th:text="${host.captureSite}">Capture site</span>
-        </p>
+        
+        <table>
+            <tr>
+                <td>Host species:</td>
+                <td><span th:text="${host.species}">Species</span></td>
+            </tr>
+            <tr>
+                <td>Host sex:</td>
+                <td><span th:text="${host.sex}">Sex</span></td>
+            </tr>
+            <tr>
+                <td>Host age group:</td>
+                <td><span th:text="${host.ageGroup}">Age group</span></td>
+            </tr>
+            <tr>
+                <td>Host capture year:</td>
+                <td><span th:text="${host.captureYear}">Capture year</span></td>
+            </tr>
+            <tr>
+                <td>Host capture site:</td>
+                <td><span th:text="${host.captureSite}">Capture site</span></td>
+            </tr>
+        </table>
 
         <table style="width:100%">
             <tr>
@@ -43,12 +59,25 @@
         <h2>Add new sample to host</h2>
 
         <form method="POST" action="/samples/addsample">
-            Code: <input type="text" name="sampleCode"/><br/>
+            <table>
+                <tr>
+                    <td>Code:</td>
+                    <td><input type="text" name="sampleCode"/></td>
+                </tr>
+                <tr>
+                    <td>Organ:</td>
+                    <td><input type="text" name="organ"/></td>
+                </tr>
+                <tr>
+                    <td>DNA isolated:</td>
+                    <td><input type="checkbox" name="dnaIsolated" /></td>
+                </tr>
+                <tr>
+                    <td>RNA isolated</td>
+                    <td><input type="checkbox" name="rnaIsolated" /></td>
+                </tr>
+            </table>
             <input type="hidden" name="hostCode" th:value="${host.code}" />
-            Organ: <input type="text" name="organ"/><br/>
-            DNA isolated: <input type="checkbox" name="dnaIsolated" /><br/>
-            RNA isolated: <input type="checkbox" name="rnaIsolated" /><br/>
-
             <input type="submit" value="Add"/>
         </form>
         </br>

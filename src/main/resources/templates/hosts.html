@@ -1,7 +1,7 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>Hosts</title>
+        <title>Lab Sample Database: Hosts</title>
         <style>
             table, th {
                 text-align: left;
@@ -40,13 +40,32 @@
         <h2>Add new host</h2>
 
         <form method="POST" action="/hosts/addhost">
-            Code: <input type="text" name="code"/><br/>
-            Species: <input type="text" name="species"/><br/>
-            Sex: <input type="text" name="sex"/><br/>
-            Age group: <input type="text" name="ageGroup"/><br/>
-            Capture year: <input type="text" name="captureYear"/><br/>
-            Capture site: <input type="text" name="captureSite"/><br/>
-
+            <table>
+                <tr>
+                    <td>Code:</td>
+                    <td><input type="text" name="code"/></td>
+                </tr>
+                <tr>
+                    <td>Species:</td>
+                    <td><input type="text" name="species"/></td>
+                </tr>
+                <tr>
+                    <td>Sex:</td>
+                    <td><input type="text" name="sex"/></td>
+                </tr>
+                <tr>
+                    <td>Age group:</td>
+                    <td><input type="text" name="ageGroup"/></td>
+                </tr>
+                <tr>
+                    <td>Capture year:</td>
+                    <td><input type="text" name="captureYear"/></td>
+                </tr>
+                <tr>
+                    <td>Capture site:</td>
+                    <td><input type="text" name="captureSite"/></td>
+                </tr>
+            </table>
             <input type="submit" value="Add"/>
         </form>
     </body>
