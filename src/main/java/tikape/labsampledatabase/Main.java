@@ -22,6 +22,11 @@ public class Main {
         if (System.getenv("PORT") != null) {
             Spark.port(Integer.valueOf(System.getenv("PORT")));
         }
+        
+        Spark.get("/", (req, res) -> {
+            res.redirect("/hosts");
+            return "";
+        });
 
         Spark.get("/hosts", (req, res) -> {
             HashMap map = new HashMap<>();
