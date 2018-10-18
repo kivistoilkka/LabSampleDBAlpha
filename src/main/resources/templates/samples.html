@@ -12,6 +12,13 @@
 
     <body>
         <h1>Samples from the host <span th:text="${host.code}">Code of the host</span></h1>
+        <p>
+            Host species: <span th:text="${host.species}">Species</span></br>
+            Host sex: <span th:text="${host.sex}">Sex</span></br>
+            Host age group: <span th:text="${host.ageGroup}">Age group</span></br>
+            Host capture year: <span th:text="${host.captureYear}">Capture year</span></br>
+            Host capture site: <span th:text="${host.captureSite}">Capture site</span>
+        </p>
 
         <table style="width:100%">
             <tr>
@@ -45,7 +52,7 @@
             <input type="submit" value="Add"/>
         </form>
         </br>
-            
+
         <a th:href="@{~/hosts}">Back to host list</a>
     </body>
 </html>
