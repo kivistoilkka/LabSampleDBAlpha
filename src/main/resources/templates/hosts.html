@@ -2,23 +2,40 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
         <title>Hosts</title>
+        <style>
+            table, th {
+                text-align: left;
+            }
+        </style>
         <meta charset="UTF-8">
     </head>
 
     <body>
         <h1>Hosts</h1>
-        Code, species, sex, age group, capture year, capture site</br>
-        <ul>
-            <li th:each="host : ${hosts}">
-                <span th:text="${host.code}">Code</span>&nbsp
-                <span th:text="${host.species}">Species</span>&nbsp
-                <span th:text="${host.sex}">Sex</span>&nbsp
-                <span th:text="${host.ageGroup}">Age group</span>&nbsp
-                <span th:text="${host.captureYear}">Capture year</span>&nbsp
-                <span th:text="${host.captureSite}">Capture site</span>
-                </br>
-            </li>
-        </ul>
+        <table style="width:100%">
+            <tr>
+                <th>Code</th>
+                <th>Species</th>
+                <th>Sex</th>
+                <th>Age group</th>
+                <th>Capture year</th>
+                <th>Capture site</th>
+            </tr>
+            <tr th:each="host : ${hosts}">
+                <td><a th:href="@{~/samples/{code}(code=${host.code})}">
+                        <span th:text="${host.code}">Code</span>
+                    </a></td>
+                <td><span th:text="${host.species}">Species</span></td>
+                <td><span th:text="${host.sex}">Sex</span></td>
+                <td><span th:text="${host.ageGroup}">Age group</span></td>
+                <td><span th:text="${host.captureYear}">Capture year</span></td>
+                <td><span th:text="${host.captureSite}">Capture site</span></td>
+                <td><form method="POST" action="/hosts/deletehost">
+                        <input type="hidden" name="code" th:value="${host.code}" />
+                        <input type="submit" value="Delete"/>
+                    </form></td>
+            </tr>
+        </table>
 
         <h2>Add new host</h2>
 
