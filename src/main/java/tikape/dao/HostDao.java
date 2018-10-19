@@ -5,7 +5,7 @@ import java.sql.*;
 import tikape.labsampledatabase.*;
 
 public class HostDao implements Dao<Host, String> {
-    
+
     private Database database;
 
     public HostDao(Database database) {
@@ -20,13 +20,13 @@ public class HostDao implements Dao<Host, String> {
                     + "FROM Host WHERE code = ?");
             stmt.setString(1, code);
             ResultSet result = stmt.executeQuery();
-            
+
             if (!result.next()) {
                 return null;
             }
-            
-            Host host = new Host(result.getString("code"), result.getString("species"), 
-                    result.getString("sex"), result.getString("age_group"), 
+
+            Host host = new Host(result.getString("code"), result.getString("species"),
+                    result.getString("sex"), result.getString("age_group"),
                     result.getInt("capture_year"), result.getString("capture_site"));
             return host;
         }
@@ -35,18 +35,18 @@ public class HostDao implements Dao<Host, String> {
     @Override
     public List<Host> findAll() throws SQLException {
         List<Host> hosts = new ArrayList<>();
-        
+
         try (Connection conn = database.getConnection()) {
             ResultSet result = conn.prepareStatement("SELECT code, species, "
                     + "sex, age_group, capture_year, capture_site FROM Host").executeQuery();
-            
+
             while (result.next()) {
-                hosts.add(new Host(result.getString("code"), result.getString("species"), 
-                    result.getString("sex"), result.getString("age_group"), 
-                    result.getInt("capture_year"), result.getString("capture_site")));
+                hosts.add(new Host(result.getString("code"), result.getString("species"),
+                        result.getString("sex"), result.getString("age_group"),
+                        result.getInt("capture_year"), result.getString("capture_site")));
             }
         }
-        
+
         return hosts;
     }
 
@@ -54,11 +54,11 @@ public class HostDao implements Dao<Host, String> {
     public Host saveOrUpdate(Host object) throws SQLException {
         // supporting only saving, disallow saving if host with the same code exists
         Host foundHost = findOne(object.getCode());
-        
+
         if (foundHost != null) {
             return foundHost;
         }
-        
+
         try (Connection conn = database.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO Host (code, species, sex, age_group, capture_year, capture_site) VALUES (?, ?, ?, ?, ?, ?)");
             stmt.setString(1, object.getCode());
@@ -67,21 +67,34 @@ public class HostDao implements Dao<Host, String> {
             stmt.setString(4, object.getAgeGroup());
             stmt.setInt(5, object.getCaptureYear());
             stmt.setString(6, object.getCaptureSite());
-            
+
             stmt.executeUpdate();
         }
-        
+
         return findOne(object.getCode());
     }
 
     @Override
     public void delete(String code) throws SQLException {
-        Connection conn = database.getConnection();
-        PreparedStatement stmt = conn.prepareStatement("DELETE FROM Host WHERE code = ?");
-        stmt.setString(1, code);
-        stmt.executeUpdate();
-        stmt.close();
-        conn.close();
-    }    
-    
+        try (Connection conn = database.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement("DELETE FROM Host WHERE code = ?");
+            stmt.setString(1, code);
+            stmt.executeUpdate();
+        }
+    }
+
+    public void deleteHostWithSamples(String code, SampleDao sampleDao) throws SQLException {
+        try (Connection conn = database.getConnection()) {
+            List<Sample> samples = sampleDao.findAllForHost(code);
+            for (Sample sample : samples) {
+                sampleDao.delete(sample.getCode());
+            }
+
+            PreparedStatement stmt = conn.prepareStatement("DELETE FROM Host WHERE code = ?");
+            stmt.setString(1, code);
+            stmt.executeUpdate();
+        }
+        return;
+    }
+
 }

@@ -22,7 +22,7 @@ public class Main {
         if (System.getenv("PORT") != null) {
             Spark.port(Integer.valueOf(System.getenv("PORT")));
         }
-        
+
         Spark.get("/", (req, res) -> {
             res.redirect("/hosts");
             return "";
@@ -36,7 +36,13 @@ public class Main {
         }, new ThymeleafTemplateEngine());
 
         Spark.post("/hosts/addhost", (req, res) -> {
-            // Lisätään toiminnallisuus syötteiden olemassaolon tarkistukseen
+            if (req.queryParams("code").equals("") | req.queryParams("species").equals("")
+                    | req.queryParams("sex").equals("") | req.queryParams("ageGroup").equals("")
+                    | req.queryParams("captureYear").equals("")
+                    | req.queryParams("captureSite").equals("")) {
+                res.redirect("/hosts");
+                return "";
+            }
 
             Integer captureYear = 0;
             try {
@@ -57,7 +63,7 @@ public class Main {
 
         Spark.post("/hosts/deletehost", (req, res) -> {
             String code = req.queryParams("code");
-            hosts.delete(code);
+            hosts.deleteHostWithSamples(code, samples);
 
             res.redirect("/hosts");
             return "";
@@ -74,9 +80,13 @@ public class Main {
 
         Spark.post("/samples/addsample", (req, res) -> {
             String hostCode = req.queryParams("hostCode");
-            
-            // Lisätään toiminnallisuus syötteiden olemassaolon tarkistamiseen
 
+            if (req.queryParams("sampleCode").equals("")
+                    | req.queryParams("organ").equals("")) {
+                res.redirect("/samples/" + hostCode);
+                return "";
+            }
+            
             Boolean dnaIsolated = false;
             if (req.queryParams("dnaIsolated") != null) {
                 dnaIsolated = true;
